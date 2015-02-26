@@ -15,6 +15,7 @@ import com.neurosky.thinkgear.*;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 
 public class MainActivity extends Activity {
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		 tv = (TextView)findViewById(R.id.textView1);
 	     tv.setText("");
+	  //   tv.setMovementMethod(new ScrollingMovementMethod());	//setMovementMethod(new ScrollingMovementMethod())setMovementMethod(new ScrollingMovementMethod())
 	     tv.append("Android version: " + Integer.valueOf(android.os.Build.VERSION.SDK) + "\n" );
 	     
 	     
@@ -76,30 +78,28 @@ public class MainActivity extends Activity {
 				  default: 
 					  break;
 				}
-				break; 
-			
+				break; 	
 			case TGDevice.MSG_POOR_SIGNAL: 
 				Log.v("HelloEEG", "PoorSignal: " + msg.arg1); 
 			case TGDevice.MSG_ATTENTION: 
 				tv.append("Attention: " + msg.arg1 + "\n");
-				Log.v("HelloEEG", "Attention: " + msg.arg1); 
+				//Log.v("HelloEEG", "Attention: " + msg.arg1); 
 				break; 
 			case TGDevice.MSG_RAW_DATA: 
-				int rawValue = msg.arg1; 
+				//int rawValue = msg.arg1; 
 				break; 
 			case TGDevice.MSG_EEG_POWER: 
-				//TGEegPower ep = ( com.neurosky.thinkgear.TGEegPower)msg.arg1; 
-				//Log.v("HelloEEG", "Delta: " + ep.delta); 
-				Log.v("HelloEEG", "Delta: xxxcorreggere"); 
+				TGEegPower ep = (TGEegPower)msg.obj; 
+				Log.v("HelloEEG", "Delta: " + ep.delta + "etcetc"); 
 			case TGDevice.MSG_HEART_RATE:
-        		tv.append("Heart rate: " + msg.arg1 + "\n");
+        		//tv.append("Heart rate: " + msg.arg1 + "\n");
                 break;
                 
 			case TGDevice.MSG_MEDITATION:
-
+				tv.append("Meditation: " + msg.arg1 + "\n");
             	break;
             case TGDevice.MSG_BLINK:
-            		tv.append("Blink: " + msg.arg1 + "\n");
+            	tv.append("Blink: " + msg.arg1 + "\n");
             	break;
             case TGDevice.MSG_RAW_COUNT:
             		//tv.append("Raw Count: " + msg.arg1 + "\n");
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
             	Toast.makeText(getApplicationContext(), "Low battery!", Toast.LENGTH_SHORT).show();
             	break;
             case TGDevice.MSG_RAW_MULTI:
-            	//TGRawMulti rawM = (TGRawMulti)msg.obj;
+            	TGRawMulti rawM = (TGRawMulti)msg.obj;
             	//tv.append("Raw1: " + rawM.ch1 + "\nRaw2: " + rawM.ch2);
 			default: 
 				break;
