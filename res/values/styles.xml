@@ -3,6 +3,9 @@
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
         <item name="colorPrimary">@color/stacked_blue</item>
         <item name="colorPrimaryDark">@color/stacked_blue</item>
+        <item name="colorAccent">@color/white_blue</item>
+        
+        <item name="android:textColorPrimary">@color/white_blue</item>
     </style>
 
 </resources>

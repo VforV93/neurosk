@@ -2,4 +2,5 @@
 <resources>
     <color name="sa_blue">#01579B</color>
     <color name="stacked_blue">#2196F3</color>
+    <color name="white_blue">#BBDEFB</color>
 </resources>
