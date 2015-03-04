@@ -9,10 +9,13 @@
             <TextView android:id="@+id/textView1" android:layout_width="fill_parent" android:text="TextView" android:layout_height="fill_parent"></TextView>
     </ScrollView>
     <Button android:layout_width="fill_parent" 
-        	android:layout_height="wrap_content" 
+        	android:layout_height="@dimen/button_height_material"					
         	android:id="@+id/button1" 
-        	android:text="Connect" 
+        	android:text="@string/btn_txt"
+        	android:textSize="@dimen/text_size_display_2_material"
         	android:onClick="doStuff"
+        	android:clickable="false"
+        	android:alpha="0.2"
         	android:textColor="@color/sa_blue"
         	android:background="@drawable/custom_btn">
     </Button>
