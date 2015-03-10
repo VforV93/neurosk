@@ -1,8 +1,8 @@
  package com.example.prova;
 
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -34,12 +34,10 @@ public class MainActivity extends ActionBarActivity{
 	private final int time_connection = 5000;
 	public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 	
-	private TextView tv;
-	private Button b;
 	private Toast toast2;
 	private MenuItem signal_tb;
 	private Fragment1 f1;
-	
+	private int mStackLevel;
 	
 	/**
 	 * RECREATING AN ACTIVITY
@@ -62,7 +60,7 @@ public class MainActivity extends ActionBarActivity{
 		// tv = (TextView)findViewById(R.id.textView1);
 		// tv.setText("asdasdasd");
 	   //  tv.setTextSize(textview_textsize);
-	     
+		mStackLevel=1;
 		// b = (Button)findViewById(R.id.button1);
 	    
 		 if (savedInstanceState == null) {
@@ -249,5 +247,30 @@ public class MainActivity extends ActionBarActivity{
 			return true;
 			
 			return false;
+	}
+	
+	
+	 @Override
+	    public void onBackPressed() {
+	       this.showDialog();
+	       Log.d("HelloEEG", "[MainActivity] onBackPressed"); 
+	       // MyDialogFragment.newInstance("title title").show(getSupportFragmentManager(), "dialog");
+	    }
+	
+	void showDialog() {
+		 mStackLevel++;
+	    // DialogFragment.show() will take care of adding the fragment
+	    // in a transaction.  We also want to remove any currently showing
+	    // dialog, so make our own transaction and take care of that here.
+	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	    Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+	    if (prev != null) {
+	        ft.remove(prev);
+	    }
+	    ft.addToBackStack(null);
+
+	    // Create and show the dialog.
+	    DialogFragment newFragment = DialogFragBChart.newInstance(this.mStackLevel);
+	    newFragment.show(ft, "dialog");
 	}
 }

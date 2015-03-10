@@ -3,6 +3,6 @@
     <color name="sa_blue">#01579B</color>
     <color name="stacked_blue">#2196F3</color>
     <color name="white_blue">#BBDEFB</color>
-    
+    <color name="transparent_background">#00FF0000</color>
     <color name="error">#D50000</color>
 </resources>

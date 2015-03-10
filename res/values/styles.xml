@@ -9,8 +9,17 @@
         <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
     </style>
 
-    <style name="MyActionButtonStyle" parent="@style/Theme.AppCompat.Light">
+<style name="MyActionButtonStyle" parent="@style/Theme.AppCompat.Light">
     <item name="android:minWidth">20dip</item>
     <item name="android:padding">6dp</item>
+</style>
+
+ <style name="CustomDialog" parent="android:style/Theme.Dialog">
+
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:windowIsTranslucent">true</item> 
+    <item name="android:alwaysDrawnWithCache">false</item>
+    <item name="android:windowContentOverlay">@null</item>
 </style>
 </resources>
