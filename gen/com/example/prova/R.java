@@ -1451,6 +1451,16 @@ containing a value of this type.
         public static final int switch_thumb_normal_material_light=0x7f060013;
         public static final int transparent_background=0x7f060034;
         public static final int white_blue=0x7f060033;
+		public static int in0=0xE8F5E9;
+		public static int in1=0xC8E6C9;
+		public static int in2=0xA5D6A7;
+		public static int in3=0xFFD54F;
+		public static int in4=0xFFCA28;
+		public static int in5=0xFFC107;
+		public static int in6=0xFFB300;
+		public static int in7=0xE64A19;
+		public static int in8=0xD84315;
+		public static int in9=0xBF360C;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1721,11 +1731,12 @@ containing a value of this type.
         public static final int b_signal_2=0x7f020036;
         public static final int b_signal_3=0x7f020037;
         public static final int b_signal_4=0x7f020038;
-        public static final int btn_default_mtrl_shape=0x7f020039;
-        public static final int btn_error=0x7f02003a;
-        public static final int custom_btn=0x7f02003b;
-        public static final int ic_launcher=0x7f02003c;
-        public static final int shape_green_rect=0x7f02003d;
+        public static final int barchart=0x7f020039;
+        public static final int btn_default_mtrl_shape=0x7f02003a;
+        public static final int btn_error=0x7f02003b;
+        public static final int custom_btn=0x7f02003c;
+        public static final int ic_launcher=0x7f02003d;
+        public static final int shape_green_rect=0x7f02003e;
     }
     public static final class id {
         public static final int action_bar=0x7f090031;
@@ -1741,9 +1752,10 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f09002e;
         public static final int action_mode_bar_stub=0x7f09002d;
         public static final int action_mode_close_button=0x7f090020;
-        public static final int action_settings=0x7f090047;
+        public static final int action_settings=0x7f090048;
         public static final int activity_chooser_view_content=0x7f090021;
         public static final int always=0x7f090014;
+        public static final int barchart=0x7f090046;
         public static final int beginning=0x7f09001b;
         public static final int button1=0x7f090043;
         public static final int chart=0x7f090044;
@@ -1788,7 +1800,7 @@ containing a value of this type.
         public static final int showCustom=0x7f090010;
         public static final int showHome=0x7f090011;
         public static final int showTitle=0x7f090012;
-        public static final int signal=0x7f090046;
+        public static final int signal=0x7f090047;
         public static final int split_action_bar=0x7f090004;
         public static final int submit_area=0x7f09003c;
         public static final int tabMode=0x7f09000c;

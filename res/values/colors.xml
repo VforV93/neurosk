@@ -5,4 +5,16 @@
     <color name="white_blue">#BBDEFB</color>
     <color name="transparent_background">#00FF0000</color>
     <color name="error">#D50000</color>
+    
+    <color name="in0">#E8F5E9</color>
+    <color name="in1">#C8E6C9</color>
+    <color name="in2">#A5D6A7</color>
+    <color name="in3">#FFD54F</color>
+    <color name="in4">#FFCA28</color>
+    <color name="in5">#FFC107</color>
+    <color name="in6">#FFB300</color>
+    <color name="in7">#E64A19</color>
+    <color name="in8">#D84315</color>
+    <color name="in9">#BF360C</color>
+    
 </resources>

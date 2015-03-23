@@ -1,12 +1,15 @@
 package com.example.prova;
 
-import android.content.Context;
+
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +26,29 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import com.neurosky.thinkgear.TGDevice;
+import com.neurosky.thinkgear.TGEegPower;
+import com.neurosky.thinkgear.TGRawMulti;
+
 
 
 public class DialogFragBChart extends DialogFragment{
 	int mNum;
-	private GraphicalView mChart;
+	private int[] delimitersColor = {0,10,20,30,40,50,60,70,80,90};
+	private GraphicalView mChart, mChart2;
 	private String[] mMonth = new String[] {
 			 "Attention", "Meditation"
 			 };
+	
+	private final int time_connection = 500;
+	public Handler mHandler;
+	public XYMultipleSeriesDataset dataset;
+	public XYSeries incomeSeriesAtt;
+	public XYSeries incomeSeriesMed;
+	public LinearLayout chartContainer;
+	public XYMultipleSeriesRenderer multiRenderer;
+	public XYSeriesRenderer incomeRendererAtt;
+	public XYSeriesRenderer incomeRendererMed;
 	
 	public static DialogFragBChart newInstance(int num) {
 		DialogFragBChart f = new DialogFragBChart();
@@ -76,30 +94,41 @@ public class DialogFragBChart extends DialogFragment{
 	 
 	 private void openChart(View v){
 		 int[] x = { 0,1 };
-		 int[] income = { 100, 55 };
-
+		 int incomeAtt = 0;
+		 int incomeMed = 0;
 		// Creating an XYSeries for Income
-		 XYSeries incomeSeries = new XYSeries("Val");
+		 incomeSeriesAtt = new XYSeries("Val1");
+		 incomeSeriesMed = new XYSeries("Val2");
 		 // Adding data to Income and Expense Series
-		 for(int i=0;i<x.length;i++){
-		 incomeSeries.add(i,income[i]);
-		 }
+		 incomeSeriesAtt.add(x[0], incomeAtt);
+		 incomeSeriesMed.add(x[1], incomeMed);
 		 
 		// Creating a dataset to hold each series
-		 XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		 dataset = new XYMultipleSeriesDataset();
 		 // Adding Income Series to the dataset
-		 dataset.addSeries(incomeSeries);
-
+		 dataset.addSeries(incomeSeriesAtt);
+		 dataset.addSeries(incomeSeriesMed);
+		 
 		// Creating XYSeriesRenderer to customize incomeSeries
-		 XYSeriesRenderer incomeRenderer = new XYSeriesRenderer();
-		 incomeRenderer.setColor(Color.CYAN); //color of the graph set to cyan
-		 incomeRenderer.setFillPoints(true);
-		 incomeRenderer.setLineWidth(2);
-		 incomeRenderer.setDisplayChartValues(true);
-		 incomeRenderer.setDisplayChartValuesDistance(10); //setting chart value distance 
+		 incomeRendererAtt = new XYSeriesRenderer();
+		 incomeRendererMed = new XYSeriesRenderer();
+		 
+		 incomeRendererAtt.setColor(Color.rgb(232, 245, 233));//color of the graph set to light green
+		 incomeRendererAtt.setFillPoints(true);
+		 incomeRendererAtt.setLineWidth(2);
+		 incomeRendererAtt.setDisplayChartValues(true);
+		 incomeRendererAtt.setDisplayChartValuesDistance(30); //setting chart value distance 
+		 
+		 
+		 incomeRendererMed.setColor(Color.rgb(232, 245, 233));//color of the graph set to light green
+		 incomeRendererMed.setFillPoints(true);
+		 incomeRendererMed.setLineWidth(2);
+		 incomeRendererMed.setDisplayChartValues(true);
+		 incomeRendererMed.setDisplayChartValuesDistance(30); //setting chart value distance 
+		 
 		 
 		// Creating a XYMultipleSeriesRenderer to customize the whole chart
-		 XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
+		 multiRenderer = new XYMultipleSeriesRenderer();
 		 multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
 		 multiRenderer.setXLabels(0);
 		 multiRenderer.setChartTitle("");
@@ -109,7 +138,7 @@ public class DialogFragBChart extends DialogFragment{
 		 /***
 		  * Customizing graphs
 		  */
-		 multiRenderer.setShowLegend(false);
+		  multiRenderer.setShowLegend(false);
 		 //setting text size of the title
 		  multiRenderer.setChartTitleTextSize(28);
 		  //setting text size of the axis title
@@ -177,26 +206,30 @@ public class DialogFragBChart extends DialogFragment{
 		  // Adding incomeRenderer and expenseRenderer to multipleRenderer
 		  // Note: The order of adding dataseries to dataset and renderers to multipleRenderer
 		  // should be same
-		  multiRenderer.addSeriesRenderer(incomeRenderer);
-
+		  multiRenderer.addSeriesRenderer(incomeRendererAtt);
+		  multiRenderer.addSeriesRenderer(incomeRendererMed);
 		  //this part is used to display graph on the xml
-		  LinearLayout chartContainer = (LinearLayout) v.findViewById(R.id.chart);
+		  chartContainer = (LinearLayout) v.findViewById(R.id.chart);
 		  //remove any views before u paint the chart
 		  chartContainer.removeAllViews();
 		  //drawing bar chart
+		  mChart = ChartFactory.getBarChartView(getActivity().getApplicationContext(), dataset, multiRenderer,Type.STACKED);
+		  chartContainer.addView(mChart);
+
+
+		/*
+		  chartContainer.removeAllViews();
+		  //drawing bar chart
+		  
+		  dataset = new XYMultipleSeriesDataset();
+		  incomeSeries = new XYSeries("Val");
+		  incomeSeries.add(0, 50);
+		  incomeSeries.add(1, 50);
+		  dataset.addSeries(incomeSeries);
 		  mChart = ChartFactory.getBarChartView(getActivity().getApplicationContext(), dataset, multiRenderer,Type.DEFAULT);
 		  chartContainer.addView(mChart);
-		  dataset.getSeriesAt(0).add(1, 100);
-		  mChart.repaint();
-/*		 
-		  //adding the view to the linearlayout
-		  chartContainer.addView(mChart);
-		 // dataset.clear();
-		  //incomeSeries.add(0,100);
-		  dataset.getSeriesAt(0).add(0, 100);
-		 // dataset.addSeries(incomeSeries);
-		  //mChart.repaint();
 */
+		  this.useHandler();
 	 }
 	 
 	 @Override
@@ -219,4 +252,74 @@ public class DialogFragBChart extends DialogFragment{
 	        openChart(v);
 	        return v;
 	    }
+	 
+	 public void useHandler() {
+		    mHandler = new Handler();
+		    mHandler.postDelayed(mRunnable, time_connection);
+		    //mHandler.removeCallbacks(mRunnable);
+		  }
+
+	 @Override
+	    public void onDestroy() {
+	        super.onDestroy();
+	        mHandler.removeCallbacks(mRunnable);
+	    }
+	 
+	 private int giveMyCharColor(int flag){
+		int r=0, g=0, b=0;
+		 
+		if(flag > delimitersColor[9])
+			return Color.rgb(191, 54, 12);
+		if(flag > delimitersColor[8])
+			return Color.rgb(216, 67, 21);
+		if(flag > delimitersColor[7])
+			return Color.rgb(230, 74, 25);
+		if(flag > delimitersColor[6])
+			return Color.rgb(255, 179, 0);
+		if(flag > delimitersColor[5])
+			return Color.rgb(255, 193, 7);
+		if(flag > delimitersColor[4])
+			return Color.rgb(255, 202, 40);
+		if(flag > delimitersColor[3])
+			return Color.rgb(255, 213, 79);
+		if(flag > delimitersColor[2])
+			return Color.rgb(165, 214, 167);
+		if(flag > delimitersColor[1])
+			return Color.rgb(200, 230, 201);
+
+		
+		 return Color.rgb(232, 245, 233); 
+	 }
+	 
+	 private Runnable mRunnable = new Runnable() {
+		    @Override
+		    public void run() {
+		    	int att = ((MainActivity)getActivity()).getCurrAtt();
+				int med = ((MainActivity)getActivity()).getCurrMed();
+				
+		    	Log.v("HelloEEG", "Aggiornooooooo att: " + att + "  med: " + med); 
+		      /** Do something **/
+		    	
+				  //remove any views before u paint the chart
+				  chartContainer.removeAllViews();
+				  //determinazione dei colori da dare alle barre
+				  
+				  incomeRendererAtt.setColor(giveMyCharColor(att));
+				  incomeRendererMed.setColor(giveMyCharColor(med));
+				  
+				  
+				  dataset = new XYMultipleSeriesDataset();
+				  incomeSeriesAtt = new XYSeries("Val1");
+				  incomeSeriesMed = new XYSeries("Val2");
+				  incomeSeriesAtt.add(0, att);
+				  incomeSeriesMed.add(1, med);
+				  dataset.addSeries(incomeSeriesAtt);
+				  dataset.addSeries(incomeSeriesMed);
+				  mChart = ChartFactory.getBarChartView(getActivity().getApplicationContext(), dataset, multiRenderer,Type.STACKED);
+				  chartContainer.addView(mChart);
+		    	
+		      mHandler.postDelayed(mRunnable, time_connection);
+		    }
+		  };
+	 
 }

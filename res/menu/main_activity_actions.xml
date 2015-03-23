@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.prova.MainActivity" >
 	
+    <item android:id="@+id/barchart"
+          android:icon="@drawable/barchart"
+          android:title="@string/action_search"
+          android:enabled="true"
+          app:showAsAction="ifRoom" />
+    
     <item android:id="@+id/signal"
           android:icon="@drawable/b_no_signal"
           android:title="@string/action_search"

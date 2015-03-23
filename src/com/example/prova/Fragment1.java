@@ -1,5 +1,7 @@
 package com.example.prova;
 
+import com.neurosky.thinkgear.TGDevice;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +19,7 @@ public class Fragment1 extends Fragment implements OnClickListener{
 	private TextView tv;
 	private final float textview_textsize = 20;
 	private Button b;
+	
 	
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){

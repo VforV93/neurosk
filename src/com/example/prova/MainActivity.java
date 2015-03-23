@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import android.util.Log;
 public class MainActivity extends ActionBarActivity{
 	
 	//public static TGDevice tgDevice; 
-	public static TGDevice tgDevice; 
+	public TGDevice tgDevice; 
 	BluetoothAdapter btAdapter;
 	
 	final boolean rawEnabled = false;
@@ -36,8 +37,12 @@ public class MainActivity extends ActionBarActivity{
 	
 	private Toast toast2;
 	private MenuItem signal_tb;
+	private MenuItem barchart;
 	private Fragment1 f1;
 	private int mStackLevel;
+	
+	private int CurrMed;
+	private int CurrAtt;
 	
 	/**
 	 * RECREATING AN ACTIVITY
@@ -49,6 +54,7 @@ public class MainActivity extends ActionBarActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Log.d("HelloEEG", "[MainActivity] <---------------");
+		this.CurrAtt = 0;	this.CurrMed = 0;
 		ActionBar actionBar = getSupportActionBar();
 		FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
 		f1 = new Fragment1();
@@ -64,7 +70,7 @@ public class MainActivity extends ActionBarActivity{
 		// b = (Button)findViewById(R.id.button1);
 	    
 		 if (savedInstanceState == null) {
-			 
+			 Log.v("HelloEEG", "DENTROOOO IFFFFFFF"); 
 				btAdapter = BluetoothAdapter.getDefaultAdapter(); 
 				if(btAdapter != null) 
 				{ 
@@ -86,20 +92,25 @@ public class MainActivity extends ActionBarActivity{
 		    }
 	}
 	
-/*	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		savedInstanceState.putInt(GENERAL_STATE, 1);
-		
-		super.onSaveInstanceState(savedInstanceState);
-	}*/
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_activity_actions, menu);
 		signal_tb = (MenuItem)menu.findItem(R.id.signal);
+		barchart = (MenuItem)menu.findItem(R.id.barchart);
+		
+		barchart.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+	       // @Override
+	        public boolean onMenuItemClick(MenuItem item) {
+	        	showDialog();
+	            return true;
+	        }
+	    });
 		//this.bool=true;
-		return true;
+		return super.onCreateOptionsMenu(menu);
+		//return true;
 	}
 
 	//@Override
@@ -192,6 +203,7 @@ public class MainActivity extends ActionBarActivity{
 				//if(msg.arg1 > 0 && msg.arg1 <= 100)
 				f1.putMessage("Attention: " + msg.arg1 + "\n");
 				Log.v("HelloEEG", "Attention: " + msg.arg1); 
+				CurrAtt = msg.arg1;
 				break; 
 			case TGDevice.MSG_RAW_DATA: 
 				//int rawValue = msg.arg1; 
@@ -205,9 +217,11 @@ public class MainActivity extends ActionBarActivity{
 			case TGDevice.MSG_MEDITATION:
 				//if(msg.arg1 > 0 && msg.arg1 <= 100)
 				f1.putMessage("Meditation: " + msg.arg1 + "\n");
+				CurrMed = msg.arg1;
             	break;
             case TGDevice.MSG_BLINK:
             	f1.putMessage("Blink: " + msg.arg1 + "\n");
+            	
             	break;
             case TGDevice.MSG_RAW_COUNT:
             	//f1.putMessage("Raw Count: " + msg.arg1 + "\n");
@@ -249,14 +263,14 @@ public class MainActivity extends ActionBarActivity{
 			return false;
 	}
 	
-	
+	/*
 	 @Override
 	    public void onBackPressed() {
 	       this.showDialog();
 	       Log.d("HelloEEG", "[MainActivity] onBackPressed"); 
 	       // MyDialogFragment.newInstance("title title").show(getSupportFragmentManager(), "dialog");
 	    }
-	
+	*/
 	void showDialog() {
 		 mStackLevel++;
 	    // DialogFragment.show() will take care of adding the fragment
@@ -272,5 +286,15 @@ public class MainActivity extends ActionBarActivity{
 	    // Create and show the dialog.
 	    DialogFragment newFragment = DialogFragBChart.newInstance(this.mStackLevel);
 	    newFragment.show(ft, "dialog");
+	    
+	    prev = getSupportFragmentManager().findFragmentByTag("dialog");
+	   
+	}
+
+	public int getCurrMed() {
+		return this.CurrMed;
+	}
+	public int getCurrAtt() {
+		return this.CurrAtt;
 	}
 }
